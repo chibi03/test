@@ -62,7 +62,7 @@ public class Drop implements ApplicationListener {
 		bucket.y = 20; // bottom left corner of the bucket is 20 pixels above
 						// the bottom screen edge
 		bucket.width = 64;
-		bucket.height = 64;
+		bucket.height = 16;
 
 		// create the raindrops array and spawn the first raindrop
 		balls = new Array<BallSprite>();
