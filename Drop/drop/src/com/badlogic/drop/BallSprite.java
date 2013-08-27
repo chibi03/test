@@ -12,14 +12,13 @@ public class BallSprite extends Rectangle{
 	
 	public BallSprite(Texture image){
 		this.image = image;
-		
 	}
 	
 	public void spawn(){
 		x = MathUtils.random(0, 800 - 64);
 		y = 480;
-		width = 64;
-		height = 64;
+		width = 32;
+		height = 32;
 	}
 
 	public void setLocation(){

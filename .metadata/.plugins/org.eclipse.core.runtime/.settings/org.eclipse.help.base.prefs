@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+remoteHelpHost=pic.dhe.ibm.com,publib.boulder.ibm.com,127.0.0.1
+remoteHelpICEnabled=true,true,false
+remoteHelpName=Rational Application Developer,Rational solution for Collaborative Lifecycle Management,Local
+remoteHelpOn=true
+remoteHelpPath=/infocenter/radhelp/v9,/infocenter/clmhelp/v4r0,/help
+remoteHelpPort=80,80,63650
+remoteHelpPreferred=true
+remoteHelpProtocol=http,http,http

@@ -30,12 +30,15 @@ public class Drop implements ApplicationListener {
 	Sound fallSound;
 	BitmapFont font;
 	private Counter counter;
-
+	private Texture tileImage;
+	Array<Tile> wall;
+	
 	@Override
 	public void create() {
 		// load the images for the droplet and the bucket, 64x64 pixels each
 		dropImage = new Texture(Gdx.files.internal("ball.png"));
 		bucketImage = new Texture(Gdx.files.internal("bucket.png"));
+		tileImage = new Texture(Gdx.files.internal("tile.png"));
 		
 		counter = new Counter();
 		
@@ -65,8 +68,10 @@ public class Drop implements ApplicationListener {
 		bucket.height = 16;
 
 		// create the raindrops array and spawn the first raindrop
+		wall = new Array<Tile>();
 		balls = new Array<BallSprite>();
 		spawnRaindrop();
+		createWall();
 	}
 
 	private void spawnRaindrop() {
@@ -75,7 +80,18 @@ public class Drop implements ApplicationListener {
 		ball.spawn();
 		lastDropTime = TimeUtils.nanoTime();
 	}
-
+	
+	private void createWall(){
+		for(int i = 0; i<=5; i++){
+			for(int j = 0; j<=10; j++){
+				Tile tile = new Tile(tileImage);
+				tile.setPosition(40+68*j, 280+18*i);
+				wall.add(tile);
+			}
+		}
+	}
+	
+	
 	@Override
 	public void render() {
 		// clear the screen with a dark blue color. The
@@ -96,11 +112,15 @@ public class Drop implements ApplicationListener {
 		// begin a new batch and draw the bucket and
 		// all drops
 		batch.begin();
+		for (Tile tile : wall) {
+			batch.draw(tile.getTexture(), tile.x, tile.y);
+		}
 		font.draw(batch, "Hits: "+counter.getCount(), 650, 450);
 		batch.draw(bucketImage, bucket.x, bucket.y);
 		for (BallSprite ball : balls) {
 			batch.draw(ball.getTexture(), ball.x, ball.y);
 		}
+		
 		batch.end();
 
 		// process user input
@@ -111,9 +131,9 @@ public class Drop implements ApplicationListener {
 			bucket.x = touchPos.x - 64 / 2;
 		}
 		if (Gdx.input.isKeyPressed(Keys.LEFT))
-			bucket.x -= 200 * Gdx.graphics.getDeltaTime();
+			bucket.x -= 250 * Gdx.graphics.getDeltaTime();
 		if (Gdx.input.isKeyPressed(Keys.RIGHT))
-			bucket.x += 200 * Gdx.graphics.getDeltaTime();
+			bucket.x += 250 * Gdx.graphics.getDeltaTime();
 
 		// make sure the bucket stays within the screen bounds
 		if (bucket.x < 0)
@@ -122,7 +142,7 @@ public class Drop implements ApplicationListener {
 			bucket.x = 800 - 64;
 
 		// check if we need to create a new raindrop
-		if (TimeUtils.nanoTime() - lastDropTime > 1000000000 && balls.size < 5)
+		if (TimeUtils.nanoTime() - lastDropTime > 1000000000 && balls.size < 1)
 			spawnRaindrop();
 
 		// move the raindrops, remove any that are beneath the bottom edge of
@@ -146,7 +166,14 @@ public class Drop implements ApplicationListener {
 				hitSound.play();
 				ball.reverse();
 			}
+			Iterator<Tile> tileIter = wall.iterator();
+			while(tileIter.hasNext()){
+				if (tileIter.next().overlaps(ball)){
+					tileIter.remove();
+				}
+			}
 		}
+		
 	}
 
 	@Override
