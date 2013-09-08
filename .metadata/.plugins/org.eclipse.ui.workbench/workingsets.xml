@@ -16,8 +16,16 @@
 <workingSet editPageId="com.ibm.etools.project.OthersWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1377616223460_13" label="Uncategorized Projects" name="OthersWorkingSet.name">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/RemoteSystemsTempFiles" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/drop" type="4"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/drop-android" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/drop-desktop" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1378136177954_17" label="libgdx jars" name="libgdx jars">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/libgdx jars" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1378136178479_18" label="!oG" name="!oG">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/!oG" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1378136179430_19" label="Sandbox" name="Sandbox">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Sandbox" type="4"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1377616223575_14" label="Multiple Working Sets" name="Aggregate:OSGi Bundle Projects:OSGi Fragment Bundle Projects:OSGi Application Projects:OSGi Composite Bundle Projects:Liberty Feature Projects:EARWorkingSetPage.name:AppClientWorkingSetPage.name:EjbWorkingSetPage.name:ConnectorWorkingSetPage.name:NewWebWorkingSetPage.name:JPAWorkingSet.name:WS_UTIL:WebFragmentWorkingSetPage.name:OthersWorkingSet.name:">
 <workingSet IMemento.internal.id="OSGi Bundle Projects"/>
@@ -36,4 +44,6 @@
 <workingSet IMemento.internal.id="OthersWorkingSet.name"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1377616235983_15" label="Window Working Set" name="Aggregate for window 1377616235983"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1378125923998_16" label="Window Working Set" name="Aggregate for window 1378125923997"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1378676037840_20" label="Window Working Set" name="Aggregate for window 1378676037840"/>
 </workingSetManager>
