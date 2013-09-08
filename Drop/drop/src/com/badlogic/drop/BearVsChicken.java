@@ -21,16 +21,36 @@ public class BearVsChicken implements ApplicationListener{
 	private Chicken chicken;
 	private Texture chickenImage;
 	
+	Texture background;
+	float currentBgX;
+	long lastTimeBg;
+
+	
 	@Override
 	public void create() {
 		bearImage = new Texture(Gdx.files.internal("bear.png"));
 		chickenImage = new Texture(Gdx.files.internal("chicken.png"));
+		// Init the background image
+		background = new Texture(Gdx.files.external("bg.jpg"));
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
 
 		bear = new Bear(bearImage);
 		chicken = new Chicken(chickenImage);
+		
+		// Init the camera
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 800, 480);
+
+
+		// the separator first appear at the position 800 (the edge of the screen, see
+		// the camera above)
+		currentBgX = 800;
+
+		// set lastTimeBg to current time
+		lastTimeBg = TimeUtils.nanoTime();
+
 	}
 
 	
@@ -43,6 +63,11 @@ public class BearVsChicken implements ApplicationListener{
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
+		// draw the first background
+		batch.draw(background, currentBgX - 800, 0);
+		// draw the second background
+		batch.draw(background, currentBgX, 0);
+		
 		batch.draw(bear.getImage(), bear.x, bear.y);
 		batch.draw(chicken.getImage(), chicken.x, chicken.y);
 		batch.end();
@@ -57,10 +82,13 @@ public class BearVsChicken implements ApplicationListener{
 //		}
 		chicken.setLocation();
 		bear.setLocation();
-		bear.incrementSpeed();
 		
 		if(chicken.overlaps(bear)){
 			bear.setHit(true);
+			bear.resetTime();
+		} else {
+			bear.setTimeUnHit(TimeUtils.nanoTime());
+			bear.setSpeed(bear.getSpeed()+ ((int)bear.getTimeUnHit()/6000000));
 		}
 		
 		if(bear.wasHit()){
@@ -68,6 +96,20 @@ public class BearVsChicken implements ApplicationListener{
 			bear.setSpeed(100);
 			lastHitTime = TimeUtils.nanoTime();
 		}
+		
+		// move the separator each 1s
+		if(TimeUtils.nanoTime() - lastTimeBg > 100000000){
+			// move the separator 50px
+			currentBgX -= 50;
+			// set the current time to lastTimeBg
+			lastTimeBg = TimeUtils.nanoTime();
+		}
+
+		// if the seprator reaches the screen edge, move it back to the first position
+		if(currentBgX == 0){
+			currentBgX = 800;
+		}
+
 	}
 
 	@Override

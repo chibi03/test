@@ -20,6 +20,7 @@ public class Bear extends Rectangle{
 	private boolean hit = false;
 	private int speed;
 	private int counter = 0;
+	private long timeUnHit = 0;
 	
 	public Bear(Texture image){
 		bearImage = image;
@@ -53,6 +54,18 @@ public class Bear extends Rectangle{
 		} else {
 			x += speed * Gdx.graphics.getDeltaTime();
 		}
+	}
+	
+	public void setTimeUnHit(long time){
+		timeUnHit = time;
+	}
+	
+	public long getTimeUnHit(){
+		return timeUnHit;
+	}
+	
+	public void resetTime(){
+		timeUnHit = 0;
 	}
 	
 	public Texture getImage(){

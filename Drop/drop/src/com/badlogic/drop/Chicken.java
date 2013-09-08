@@ -21,13 +21,13 @@ public class Chicken extends Rectangle{
 	}
 	
 	public void setLocation(){
-		if (x < 0){
-			x = 0;
-		}else if (x > 800 - 64){
-			x = 800 - 64;
-		} else {
-			x += speed * Gdx.graphics.getDeltaTime();
-		}
+//		if (x < 0){
+//			x = 0;
+//		}else if (x > 800 - 64){
+//			x = 800 - 64;
+//		} else {
+//			x += speed * Gdx.graphics.getDeltaTime();
+//		}
 	}
 	
 	public Texture getImage(){
