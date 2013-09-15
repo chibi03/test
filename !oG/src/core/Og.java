@@ -1,11 +1,16 @@
 package core;
 
+import actors.Bear;
+import actors.Chicken;
 import actors.Obstacle;
+import actors.ScrollingSprite;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import controllers.ObstacleController;
@@ -16,7 +21,12 @@ public class Og implements ApplicationListener {
 
 	private OrthographicCamera camera;
 	private ObstacleController obsController;
+	private Bear bear;
+	private Chicken chicken;
 	private SpriteBatch batch;
+	private ScrollingSprite scroll;
+	
+	private Music bgMusic;
 
 	/**
 	 * Get the width of the visible area
@@ -46,22 +56,40 @@ public class Og implements ApplicationListener {
 		Og.height = Gdx.graphics.getHeight() * 3;
 		camera = new OrthographicCamera(Og.getWidth(), Og.getHeight());
 		obsController = new ObstacleController();
+		bear = new Bear(new Sprite(), 0,0);
+		bear.createAnimation();
+		chicken = new Chicken(new Sprite(), -800, 0);
+		chicken.createAnimation();
+		scroll = new ScrollingSprite(new Sprite(), -800, -200);
+		scroll.create();
 		batch = new SpriteBatch();
+		
+		bgMusic = Gdx.audio.newMusic(Gdx.files.local("src/sound/placeHolderBG.wav"));
+		bgMusic.setLooping(true);
+		bgMusic.setVolume((float)0.5);
+		bgMusic.play();
 	}
 
 	/**
-	 * Standard ApplicationListener entry point. This is the last thing we will
-	 * run. Be sure to clean up all remaining objects at this point
+	 * Standard {@link com.badlogic.gdx.ApplicationListener} entry point. This
+	 * is the last thing we will run. Be sure to clean up all remaining objects
+	 * at this point
 	 */
 	@Override
 	public void dispose() {
 		obsController.dispose();
+		bear.dispose();
+		chicken.dispose();
+		scroll.dispose();
 		batch.dispose();
+		bgMusic.stop();
+		bgMusic.dispose();
 	}
 
 	/**
-	 * ApplicationListener pause method. TODO: Decide on expected behaviour
-	 * during a pause and implement
+	 * {@link com.badlogic.gdx.ApplicationListener} pause method. TODO: Decide
+	 * on expected behaviour during a pause and implement. {@link #resume()}
+	 * will need implementing also
 	 */
 	@Override
 	public void pause() {
@@ -71,11 +99,12 @@ public class Og implements ApplicationListener {
 
 	/**
 	 * Render loop. This loop will be called every frame. Should update all
-	 * known objects and then draw them by adding them to the batch
+	 * known objects and then draw them by adding them to the
+	 * {@link com.badlogic.gdx.graphics.g2d.SpriteBatch batch}
 	 */
 	@Override
 	public void render() {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
@@ -83,6 +112,9 @@ public class Og implements ApplicationListener {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		bear.startRender(batch);
+		chicken.startRender(batch);
+		scroll.startScroll(batch);
 		for (Obstacle obstacle : obsController.getObstacles()) {
 			batch.draw(obstacle.getSprite(), obstacle.getX(), obstacle.getY());
 		}
@@ -90,8 +122,8 @@ public class Og implements ApplicationListener {
 	}
 
 	/**
-	 * Method that will be called when the user resizes the window
-	 * TODO: Resize the background and all known objects 
+	 * Method that will be called when the user resizes the window TODO: Resize
+	 * the background and all known objects
 	 */
 	@Override
 	public void resize(int arg0, int arg1) {
@@ -100,7 +132,8 @@ public class Og implements ApplicationListener {
 	}
 
 	/**
-	 * Partner method to {@link #pause()}. Will be called when the player unpauses the game
+	 * Partner method to {@link #pause()}. Will be called when the player
+	 * unpauses the game
 	 */
 	@Override
 	public void resume() {

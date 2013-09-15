@@ -1,0 +1,26 @@
+package actors;
+
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+public class Bear extends AnimatedActor {
+
+	Texture animatedImage;
+	
+	protected Bear(Sprite s, float x, float y) {
+		super(s, x, y);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

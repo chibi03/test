@@ -1,0 +1,76 @@
+package actors;
+
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+/**
+ * Abstract superclass for all Actors. This should be inherited by anything we
+ * wish to draw other than the background.
+ * 
+ * @author Andy
+ * 
+ */
+public abstract class Actor {
+	protected Sprite sprite;
+	protected float posX;
+	protected float posY;
+
+	/**
+	 * Actor Superconstructor. Required arguments ensure that we avoid null
+	 * pointers when using public getters.
+	 * 
+	 * @param s
+	 *            {@link com.badlogic.gdx.graphics.g2d.Sprite} for the actor
+	 *            (required for
+	 *            {@link com.badlogic.gdx.graphics.g2d.SpriteBatch} drawing)
+	 * @param x
+	 *            Position of the {@link com.badlogic.gdx.graphics.g2d.Sprite}
+	 *            on the x axis
+	 * @param y
+	 *            Position of the {@link com.badlogic.gdx.graphics.g2d.Sprite}
+	 *            on the y axis
+	 */
+	protected Actor(Sprite s, float x, float y) {
+		sprite = s;
+		posX = x;
+		posY = y;
+	}
+
+	/**
+	 * Get the X co-ordinate of the actor
+	 * 
+	 * @return
+	 */
+	public float getX() {
+		return posX;
+	}
+
+	/**
+	 * Get the Y co-ordinate of the actor
+	 * 
+	 * @return
+	 */
+	public float getY() {
+		return posY;
+	}
+
+	/**
+	 * Get the {@link com.badlogic.gdx.graphics.g2d.Sprite} of the actor
+	 * 
+	 * @return
+	 */
+	public Sprite getSprite() {
+		return sprite;
+	}
+
+	/**
+	 * Make any updates to the actor that are required each
+	 * {@link core.Og#render()} call
+	 */
+	public abstract void create();
+
+	/**
+	 * Dispose of the actor. This will be the last method called on this class
+	 */
+	public abstract void dispose();
+
+}

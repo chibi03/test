@@ -1,7 +1,0 @@
-package com.badlogic.drop;
-
-import com.badlogic.gdx.math.Rectangle;
-
-public class Tile extends Rectangle {
-
-}

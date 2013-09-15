@@ -20,6 +20,9 @@ public class Chicken extends Rectangle{
 		speed = 50;
 	}
 	
+	
+	
+	
 	public void setLocation(){
 //		if (x < 0){
 //			x = 0;

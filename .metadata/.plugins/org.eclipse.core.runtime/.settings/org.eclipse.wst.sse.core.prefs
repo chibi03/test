@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-task-tag-projects-already-scanned=RemoteSystemsTempFiles,drop,drop-android,drop-desktop
+task-tag-projects-already-scanned=RemoteSystemsTempFiles,drop,drop-desktop,\!oG,Sandbox,libgdx jars

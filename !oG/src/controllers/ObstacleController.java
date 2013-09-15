@@ -8,6 +8,7 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
+import core.Constants;
 import core.Og;
 
 import enums.ObstacleType;
@@ -15,9 +16,9 @@ import enums.ObstacleType;
 import actors.Obstacle;
 
 /**
- * Controller method for creation, storage and removal of obstacles. Will create
- * obstacles at random points in time, and remove them when they are no longer
- * displayed
+ * Controller method for creation, storage and removal of
+ * {@link actors.Obstacle}. Will create obstacles at random points in time, and
+ * remove them when they are no longer displayed
  * 
  * @author Andy
  * 
@@ -25,15 +26,12 @@ import actors.Obstacle;
 public class ObstacleController {
 	private static Dictionary<ObstacleType, Texture> textures = new Hashtable<ObstacleType, Texture>();
 	private static boolean areTexturesLoaded = false;
-	
-	final private float baseCreationChance = 0.1f;
-	final private float baseCreationCooldown = 1.0f;
-	
-	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();	
+
+	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	private float creationCooldown = 0.0f;
-	private float creationChance = baseCreationChance;
+	private float creationChance = Constants.OBSTACLE_RESPAWN_BASE_CHANCE;
 	private Random rand;
-	
+
 	// Used to dispose of off screen obstacles
 	private ArrayList<Obstacle> deadObstacles = new ArrayList<Obstacle>();
 
@@ -41,14 +39,14 @@ public class ObstacleController {
 	 * Create a new Obstacle Controller
 	 */
 	public ObstacleController() {
-		if(!ObstacleController.areTexturesLoaded){
+		if (!ObstacleController.areTexturesLoaded) {
 			ObstacleController.loadTextures();
 		}
 		rand = new Random();
 	}
 
 	/**
-	 * Call the update method of all the obstacles
+	 * Call the {@link actors.Obstacle#create()} method of all the {@link actors.Obstacle}s
 	 */
 	public void update() {
 		for (Obstacle o : obstacles) {
@@ -58,7 +56,7 @@ public class ObstacleController {
 				deadObstacles.add(o);
 			}
 		}
-		if(deadObstacles.size() > 0){
+		if (deadObstacles.size() > 0) {
 			obstacles.removeAll(deadObstacles);
 			deadObstacles.removeAll(deadObstacles);
 		}
@@ -66,26 +64,28 @@ public class ObstacleController {
 	}
 
 	/**
-	 * Loop over the loaded Obstacles and dispose them.
-	 * Loop over the loaded textures and dispose them.
-	 * Flip the areTexturesLoaded flag back to false.
+	 * Loop over the loaded Obstacles and {@link actors.Obstacle#dispose()}
+	 * them. Loop over the loaded {@link com.badlogic.gdx.graphics.Texture} and
+	 * {@link com.badlogic.gdx.graphics.Texture#dispose()} them. Flip the
+	 * areTexturesLoaded flag back to false.
 	 */
-	public void dispose(){
-		for(Obstacle o : obstacles){
+	public void dispose() {
+		for (Obstacle o : obstacles) {
 			o.dispose();
 		}
 		obstacles.removeAll(obstacles);
-		for(ObstacleType type : ObstacleType.values()){
+		for (ObstacleType type : ObstacleType.values()) {
 			Texture tex = ObstacleController.textures.get(type);
 			ObstacleController.textures.remove(tex);
 			tex.dispose();
 		}
 		ObstacleController.areTexturesLoaded = false;
 	}
-	
+
 	/**
-	 * Getter for the obstacle list. Will be called by render to allow for batch
-	 * drawing of obstacles
+	 * Getter for the {@link actors.Obstacle} list. Will be called by
+	 * {@link core.Og#render()} to allow for
+	 * {@link com.badlogic.gdx.graphics.g2d.SpriteBatch} drawing of obstacles
 	 * 
 	 * @return
 	 */
@@ -94,7 +94,8 @@ public class ObstacleController {
 	}
 
 	/**
-	 * Check to see if an obstacle is outside the bounds of the screen
+	 * Check to see if an {@link actors.Obstacle} is outside the bounds of the
+	 * screen
 	 * 
 	 * @param obstacle
 	 * @return
@@ -108,8 +109,8 @@ public class ObstacleController {
 	}
 
 	/**
-	 * Decide randomly if we want to create a new obstacle this frame (if we
-	 * haven't created one recently)
+	 * Decide randomly if we want to create a new {@link actors.Obstacle} this
+	 * frame (if we haven't created one recently)
 	 */
 	private void generate() {
 		if (creationCooldown > 0) {
@@ -119,16 +120,16 @@ public class ObstacleController {
 		creationCooldown = 0;
 		if (rand.nextFloat() < creationChance * Gdx.graphics.getDeltaTime()) {
 			createRandomObstacle();
-			creationCooldown = baseCreationCooldown;
-			creationChance = baseCreationChance;
+			creationCooldown = Constants.OBSTACLE_RESPAWN_COOLDOWN;
+			creationChance = Constants.OBSTACLE_RESPAWN_BASE_CHANCE;
 		} else {
-			creationChance += 0.001f * Gdx.graphics.getDeltaTime();
+			creationChance += Constants.OBSTACLE_RESPAWN_CHANCE_INCREMENT * Gdx.graphics.getDeltaTime();
 		}
 	}
 
 	/**
-	 * Select a random obstacle type from list of all types, then generate a new
-	 * obstacle of that type
+	 * Select a random {@link actors.Obstacle} type from list of all
+	 * {@link enums.ObstacleType}, then generate a new obstacle of that type
 	 */
 	private void createRandomObstacle() {
 		int randInt = rand.nextInt(ObstacleType.values().length);
@@ -137,40 +138,43 @@ public class ObstacleController {
 	}
 
 	/**
-	 * Create a new obstacle of the specified type and add it to the list of
-	 * obstacles
+	 * Create a new {@link actors.Obstacle} of the specified
+	 * {@link enums.ObstacleType} and add it to the list of obstacles
 	 * 
 	 * @param type
 	 */
 	private void createObstacle(ObstacleType type) {
 		try {
-			Obstacle obstacle = new Obstacle(type,
-					-Og.getWidth() / 2, 0);
+			Obstacle obstacle = new Obstacle(type, -Og.getWidth() / 2, 0);
 			obstacles.add(obstacle);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Static method for loading obstacle textures
+	 * Static method for loading {@link com.badlogic.gdx.graphics.Texture}s
+	 * required for {@link actors.Obstacle}s
 	 */
-	private static void loadTextures(){
-		if(!ObstacleController.areTexturesLoaded){
-			for(ObstacleType oType : ObstacleType.values()){
-				Texture tex = new Texture(Gdx.files.local("assets/TestTexture.png"));
+	private static void loadTextures() {
+		if (!ObstacleController.areTexturesLoaded) {
+			for (ObstacleType oType : ObstacleType.values()) {
+				Texture tex = new Texture(
+						Gdx.files.local("assets/TestTexture.png"));
 				ObstacleController.textures.put(oType, tex);
 			}
 			ObstacleController.areTexturesLoaded = true;
 		}
 	}
-	
+
 	/**
-	 * Getter for Obstacle to grab the correct texture for itself
-	 * @throws Exception 
+	 * Getter used by {@link actors.Obstacle} constructor to grab the correct
+	 * {@link com.badlogic.gdx.graphics.Texture} for itself
+	 * 
+	 * @throws Exception
 	 */
-	public static Texture getTexture(ObstacleType type) throws Exception{
-		if(ObstacleController.areTexturesLoaded){
+	public static Texture getTexture(ObstacleType type) throws Exception {
+		if (ObstacleController.areTexturesLoaded) {
 			return ObstacleController.textures.get(type);
 		}
 		throw new Exception("Textures have not been loaded");

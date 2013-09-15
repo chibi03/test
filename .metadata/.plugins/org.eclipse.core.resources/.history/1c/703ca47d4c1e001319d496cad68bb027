@@ -1,0 +1,24 @@
+package actors;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+public class Bear extends AnimatedActor {
+
+	Texture animatedImage;
+	
+	protected Bear(Sprite s, float x, float y) {
+		super(s, x, y, new Texture(Gdx.files.local("/!oG/src/img/polarbear_sprite_walking.jpg")));
+	}
+
+	@Override
+	public void update() {
+		super.startAnimation();
+	}
+
+	@Override
+	public void dispose() {
+	}
+
+}

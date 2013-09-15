@@ -1,0 +1,46 @@
+package actors;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+public class AnimatedActor extends Actor{
+
+	private static final int FRAME_COLS = 4; // #1
+	private static final int FRAME_ROWS = 1; // #2
+
+	Animation walkAnimation; // #3
+	TextureRegion[] walkFrames; // #5
+	TextureRegion currentFrame; // #7
+	float stateTime; // #8
+	
+	protected AnimatedActor(Sprite s, float x, float y) {
+		super(s, x, y);
+		// TODO Auto-generated constructor stub
+	}
+
+	public void startAnimation(Texture image) {
+		TextureRegion[][] tmp = TextureRegion.split(image, image.getWidth() / FRAME_COLS, image.getHeight()
+						/ FRAME_ROWS); // #10
+		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		int index = 0;
+		for (int i = 0; i < FRAME_ROWS; i++) {
+			for (int j = 0; j < FRAME_COLS; j++) {
+				walkFrames[index++] = tmp[i][j];
+			}
+		}
+		walkAnimation = new Animation(0.05f, walkFrames); // #11
+		stateTime = 0f; // #13
+	}
+
+	public void startRender(SpriteBatch spriteBatch) {
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT); // #14
+		stateTime += Gdx.graphics.getDeltaTime(); // #15
+		currentFrame = walkAnimation.getKeyFrame(stateTime, true); // #16
+		spriteBatch.draw(currentFrame, 50, 50); // #17
+	}
+	
+}

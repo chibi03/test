@@ -13,11 +13,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class BearVsChicken implements ApplicationListener{
 
-	Texture bearImage;
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	long lastHitTime;
 	private Bear bear;
+	private Texture bearImage;
 	private Chicken chicken;
 	private Texture chickenImage;
 	
@@ -28,15 +28,16 @@ public class BearVsChicken implements ApplicationListener{
 	
 	@Override
 	public void create() {
-		bearImage = new Texture(Gdx.files.internal("bear.png"));
+		bearImage = new Texture(Gdx.files.external("Workspaces/test/Drop/drop-desktop/assets/polarbear_sprite_walking.jpg"));
 		chickenImage = new Texture(Gdx.files.internal("chicken.png"));
 		// Init the background image
-		background = new Texture(Gdx.files.external("bg.jpg"));
+//		background = new Texture(Gdx.files.external("bg.jpg"));
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
 
 		bear = new Bear(bearImage);
+		bear.startAnimation();
 		chicken = new Chicken(chickenImage);
 		
 		// Init the camera
@@ -64,11 +65,10 @@ public class BearVsChicken implements ApplicationListener{
 
 		batch.begin();
 		// draw the first background
-		batch.draw(background, currentBgX - 800, 0);
+//		batch.draw(background, currentBgX - 800, 0);
 		// draw the second background
-		batch.draw(background, currentBgX, 0);
-		
-		batch.draw(bear.getImage(), bear.x, bear.y);
+//		batch.draw(background, currentBgX, 0);
+		bear.startRender(batch);
 		batch.draw(chicken.getImage(), chicken.x, chicken.y);
 		batch.end();
 

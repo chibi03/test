@@ -1,0 +1,55 @@
+package actors;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public class ScrollingSprite extends Actor {
+
+	 Texture spriteTexture;
+	 float scrollTimer = 0.0f;
+	        
+	 @Override
+	 public void create() {
+	     spriteBatch = new SpriteBatch();
+	     spriteTexture = new Texture(Gdx.files.internal("data/spriteTexture.png"));
+	                 
+	     spriteTexture.setWrap(!TextureWrap.Repeat,!TextureWrap.Repeat);
+	     sprite = new Sprite(spriteTexture, 0, 0, 64, 64);
+	     sprite.setSize(256, 256);
+	 }
+	 
+	@Override
+	 public void render() {
+	     scrollTimer+=Gdx.graphics.getDeltaTime();
+	     if(scrollTimer>1.0f)
+	         scrollTimer = 0.0f;
+	                
+	     sprite.setU(scrollTimer);
+	     sprite.setU2(scrollTimer+1);
+	                
+	     spriteBatch.begin();
+	     sprite.draw(spriteBatch);
+	     spriteBatch.end();
+	 }      
+	
+	protected ScrollingSprite(Sprite s, float x, float y) {
+		super(s, x, y);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
+	}
+
+}
